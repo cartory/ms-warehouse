@@ -11,26 +11,25 @@ const io = new socket.Server(server)
 const ingredientService = require('./src/services/ingredient.service')
 
 io.on('connection', (socket) => {
-	console.log('connection', socket.id)
-	
-	socket.on('recipe-request', data => {
+	socket.on('recipe-request', async data => {
 		const { clientId, requestState, recipe } = data
 
+		await socket.join(clientId)
+		
 		if (requestState === "preparing-recipe") {
 			const { ingredients = [] } = recipe
 
 			try {
 				ingredients.forEach(async ({ name, count }) => {
-					console.log("getting " + name, count);
 					await ingredientService.getIngredientCount(name, count)
 				});
 
 				data.requestState = "cooking-recipe"
-				socket.broadcast.to(clientId).emit('recipe-request', data)
+				io.sockets.in(clientId).emit("recipe-response", data)
 			} catch (err) {
 				console.error(err);
 				data.requestState = "error-recipe"
-				socket.broadcast.to(clientId).emit('recipe-request')
+				io.sockets.in(clientId).emit("recipe-response")
 			}
 		}
 	})
