@@ -1,11 +1,13 @@
+const axios = require('axios').default
 const { Ingredient } = require('../models/ingredient')
+
 
 const buyIngredient = async (name) => {
     let quantitySold = 0
 
     try {
-        const res = await fetch(`${process.env.HOST_FARMER_MARKET}/api/farmers-market/buy?ingredient=${name}`)
-        const json = await res.json()
+        const res = await axios.get(`${process.env.HOST_FARMER_MARKET}/api/farmers-market/buy?ingredient=${name}`)
+        const json = res.data
 
         quantitySold = json.quantitySold ?? 0
     } catch (err) {
