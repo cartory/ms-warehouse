@@ -5,6 +5,8 @@ const { io } = require('socket.io-client')
 const app = require('./src/app')
 const ingredientService = require('./src/services/ingredient.service')
 
+const delayInMilliseconds = 3000
+
 const socket = io(process.env.HOST_MS_RESTAURANT, {
 	transports: ['websocket']
 })
@@ -12,7 +14,8 @@ const socket = io(process.env.HOST_MS_RESTAURANT, {
 socket.on("recipe-request", data => {
 	const { requestState, recipe } = data
 
-	if (requestState === "preparing") {
+	if (requestState === "prepare") {
+		console.log(data);
 		const { ingredients = [] } = recipe
 
 		try {
@@ -20,17 +23,24 @@ socket.on("recipe-request", data => {
 				await ingredientService.getIngredientCount(name, count)
 			});
 
-			data.requestState = "cooking"
-			socket.emit("recipe-response", { ...data, foodReady: true })
+			data.foodReady = true
+			data.requestState = "ready"
+
+			setTimeout(() => {
+				socket.emit("recipe-response", data)
+			}, delayInMilliseconds);
 		} catch (err) {
 			console.error(err);
 			data.requestState = "error"
-			socket.emit("recipe-response", data)
+
+			setTimeout(() => {
+				socket.emit("recipe-response", data)
+			}, delayInMilliseconds);
 		}
 	}
 })
 
-app.listen(() => {
+app.listen(process.env.PORT || 5000, () => {
 	console.log(new Date())
 	console.log(`Server running on \x1b[33mhttp://${process.env.HOST}:${process.env.PORT}\x1b[0m`)
 })

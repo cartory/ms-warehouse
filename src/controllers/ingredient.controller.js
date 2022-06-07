@@ -23,10 +23,10 @@ const findAll = async (_, res) => {
 }
 
 const getIngredientHistory = async ({ query }, res) => {
-    let { page = 0, limit = 10 } = query
+    let { page = 0, limit = 15 } = query
 
-    page = isNaN(page) ? 0 : page
-    limit = isNaN(limit) ? 10 : limit
+    page = isNaN(page) ? 0 : Number(page)
+    limit = isNaN(limit) ? 15 : Number(limit)
 
     try {
         const historyRequest = await ingredientService.getIngredientHistory(page, limit)

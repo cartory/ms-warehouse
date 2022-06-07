@@ -71,7 +71,7 @@ const getIngredient = (name = "") => {
     }
 }
 
-const getIngredientHistory = (page = 0, limit = 10) => {
+const getIngredientHistory = (page = 0, limit = 15) => {
     try {
         return Request.findAll({
             limit: limit,
@@ -81,7 +81,8 @@ const getIngredientHistory = (page = 0, limit = 10) => {
                     [Op.not]: null
                 }
             },
-            include: ['ingredient']
+            include: ['ingredient'],
+            order: [["createdAt", "DESC"]],
         })
     } catch (err) {
         throw new Error('Ingredients History Error')
