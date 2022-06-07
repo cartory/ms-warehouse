@@ -5,8 +5,8 @@ const ingredientController = require('./controllers/ingredient.controller')
 const router = Router()
 
 router
-    // 
     .get('/ingredients', ingredientController.findAll)
     .get('/ingredients/:name', ingredientController.findOne)
+    .get('/history/ingredients', ingredientController.getIngredientHistory)
 
 module.exports = router

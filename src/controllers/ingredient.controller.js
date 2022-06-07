@@ -22,7 +22,23 @@ const findAll = async (_, res) => {
     }
 }
 
+const getIngredientHistory = async ({ query }, res) => {
+    let { page = 0, limit = 10 } = query
+
+    page = isNaN(page) ? 0 : page
+    limit = isNaN(limit) ? 10 : limit
+
+    try {
+        const historyRequest = await ingredientService.getIngredientHistory(page, limit)
+        return res.status(200).json(historyRequest)
+    } catch (err) {
+        console.error('error > getIngredientHistory');
+        return res.status(500).json([])
+    }
+}
+
 module.exports = {
     findOne,
     findAll,
+    getIngredientHistory,
 }

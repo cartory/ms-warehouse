@@ -2,14 +2,15 @@ const { Model, DataTypes } = require('sequelize')
 
 const sequelize = require('../settings/sequelize')
 
-class Ingredient extends Model { }
+class Recipe extends Model { }
+class RecipeIngredient extends Model { }
 
-Ingredient.init({
+Recipe.init({
     id: {
+        type: DataTypes.INTEGER(10),
         primaryKey: true,
         autoIncrement: true,
         autoIncrementIdentity: true,
-        type: DataTypes.INTEGER(10),
     },
     name: {
         unique: true,
@@ -18,19 +19,22 @@ Ingredient.init({
     imageUrl: {
         type: DataTypes.STRING
     },
-    stock: {
-        defaultValue: 5,
-        type: DataTypes.INTEGER,
-    },
-
-    minimumStock: {
-        defaultValue: 10,
-        type: DataTypes.INTEGER,
-    }
 }, {
     sequelize,
     paranoid: true,
     timestamps: true,
 })
 
-module.exports = { Ingredient }
+RecipeIngredient.init({
+    count: {
+        defaultValue: 0,
+        allowNull: false,
+        type: DataTypes.INTEGER,
+    }
+}, {
+    sequelize,
+    paranoid: false,
+    timestamps: false,
+})
+
+module.exports = { Recipe, RecipeIngredient }

@@ -1,23 +1,20 @@
 const cors = require('cors')
+const morgan = require('morgan')
 const express = require('express')
 
 const apiRoutes = require('./api.routes')
-const { Ingredient } = require('./models/ingredient')
+const sequelize = require('./settings/sequelize')
 
 const app = express()
-const sequelize = Ingredient.sequelize
-const ingredients = require('./models/ingredients.json')
 
 sequelize
-    .sync()
-    .then(() => {
-        console.log('sync done')
-        Ingredient.bulkCreate(ingredients).finally()
-    })
-    .catch(e => console.error('sync error'))
+    .authenticate()
+    .then(() => console.log('auth done'))
+    .catch(e => console.error('auth error'))
 
 app
     .use(cors())
+    .use(morgan('dev'))
     .use(express.urlencoded({ extended: true }))
     .use(express.json())
     .use('/api', apiRoutes)
