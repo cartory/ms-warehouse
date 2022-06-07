@@ -10,11 +10,9 @@ const socket = io('ws://localhost:3000', {
 })
 
 socket.on("recipe-request", data => {
-	const { clientId, requestState, recipe } = data
+	const { requestState, recipe } = data
 
-	await socket.join(clientId)
-
-	if (requestState === "preparing-recipe") {
+	if (requestState === "preparing") {
 		const { ingredients = [] } = recipe
 
 		try {
@@ -22,11 +20,11 @@ socket.on("recipe-request", data => {
 				await ingredientService.getIngredientCount(name, count)
 			});
 
-			data.requestState = "cooking-recipe"
-			socket.emit("recipe-response", data)
+			data.requestState = "cooking"
+			socket.emit("recipe-response", { ...data, foodReady: true })
 		} catch (err) {
 			console.error(err);
-			data.requestState = "error-recipe"
+			data.requestState = "error"
 			socket.emit("recipe-response", data)
 		}
 	}
