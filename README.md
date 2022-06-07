@@ -1,4 +1,4 @@
-# Free Lunch App
+# ms-warehouse
 
 Free Lunch App, build with `javascript` `react`. You can see the backend-microservices side [here](https://github.com/cartory/antique-bidding-back.git)
 
