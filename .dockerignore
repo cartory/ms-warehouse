@@ -1,0 +1,7 @@
+# DIR
+seed/
+node_modules/
+
+# FILE
+README.md
+npm-debug.log

@@ -40,7 +40,7 @@ socket.on("recipe-request", data => {
 	}
 })
 
-app.listen(process.env.PORT || 5000, () => {
-	console.log(new Date())
+app.listen(process.env.PORT || 6000, () => {
+	console.log(new Date(), process.env.PORT)
 	console.log(`Server running on \x1b[33mhttp://${process.env.HOST}:${process.env.PORT}\x1b[0m`)
 })
