@@ -1,6 +1,6 @@
 # ms-warehouse
 
-Free Lunch App, build with `javascript` `react`. You can see the backend-microservices side [here](https://github.com/cartory/antique-bidding-back.git)
+Free Lunch App, build with `javascript` `react`. You can see the backend-microservices side [here](https://github.com/cartory/ms-restaurant.git)
 
 ## Entity Relationship Diagram
 
