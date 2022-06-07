@@ -5,7 +5,7 @@ const { io } = require('socket.io-client')
 const app = require('./src/app')
 const ingredientService = require('./src/services/ingredient.service')
 
-const socket = io('ws://localhost:3000', {
+const socket = io(process.env.HOST_MS_RESTAURANT, {
 	transports: ['websocket']
 })
 
